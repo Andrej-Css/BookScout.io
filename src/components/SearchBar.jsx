@@ -4,15 +4,23 @@ import '../App';
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState([]);
+  const [personalBooks, setPersonalBooks] = useState([]); // Storing books from your personal API
   const [filteredBooks, setFilteredBooks] = useState([]);
-  const [isTyping, setIsTyping] = useState(false); // To track if user has started typing
+  const [isTyping, setIsTyping] = useState(false); // To track if the user has started typing
 
   // Fetch books data once when the component is mounted
   useEffect(() => {
     const fetchBooks = async () => {
+      // Fetch public book data
       const response = await fetch("https://example-data.draftbit.com/books?_limit=100");
       const data = await response.json();
+
+      // Fetch your personal API data for price comparison
+      const personalResponse = await fetch("public/PersonalAPI.json"); 
+      const personalApiData = await personalResponse.json();
+
       setBooks(data);
+      setPersonalBooks(personalApiData);
     };
 
     fetchBooks();
@@ -26,14 +34,32 @@ const SearchBar = () => {
       setIsTyping(true); // Set isTyping to true when the user is typing
 
       const lowercasedSearchTerm = searchTerm.toLowerCase();
-      const filtered = books.filter(
+
+      const allBooks = [...books];
+
+      const filtered = allBooks.filter(
         (book) =>
           book.title.toLowerCase().includes(lowercasedSearchTerm) ||
           book.authors.toLowerCase().includes(lowercasedSearchTerm)
       );
-      setFilteredBooks(filtered);
+
+      // Add price information from the personal API
+      const filteredWithPrices = filtered.map((book) => {
+        const personalBook = personalBooks.find(
+          (personalBook) => personalBook.title === book.title
+        );
+        if (personalBook) {
+          return {
+            ...book,
+            prices: personalBook, // Add price details to the book object
+          };
+        }
+        return book;
+      });
+
+      setFilteredBooks(filteredWithPrices);
     }
-  }, [searchTerm, books]);
+  }, [searchTerm, books, personalBooks]);
 
   return (
     <div>
@@ -49,8 +75,20 @@ const SearchBar = () => {
         {filteredBooks.length > 0 ? (
           filteredBooks.map((book) => (
             <div key={book.id} className="bookSearch-item">
-              <img src={book.image_url} alt={book.title} />
+              <img src={book.image_url || "default-image.jpg"} alt={book.title} />
               <h2>{book.title}</h2>
+              <p>Author: {book.authors || "Unknown"}</p>
+
+              {/* Display prices from the personal API */}
+              {book.prices ? (
+                <div>
+                  <p>Price at Diverta: {book.prices.priceDiverta} RON</p>
+                  <p>Price at Carturesti: {book.prices.priceCarturesti} RON</p>
+                  <p>Price at Librarum: {book.prices.priceLibrarum} RON</p>
+                </div>
+              ) : (
+                <p>No price info available</p>
+              )}
             </div>
           ))
         ) : (

@@ -28,7 +28,7 @@ body, html {
 /* Navbar styling */
 .Nav-Bar-Wrapper {
     display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-columns: 33% 33% 33%;
     position:fixed;
     top: 0;
     width: 100%;

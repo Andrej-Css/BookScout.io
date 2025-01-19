@@ -10,12 +10,12 @@ const NavBar = () => {
                 <div className="bookListLink">
                     <Link to="/BookList">Go back to Booklist</Link>
                 </div>
-                <div className="searchBar">Search...</div>
+                <div className="searchBar">
+                <Link to="/">Search...</Link>
+
+                </div>
                 <div className="favoritesLink">
                     <Link to="/favorites">Your Favorites</Link>
-                </div>
-                <div className="comparePrices">
-                    Compare Prices
                 </div>
             </div>
         </div>
