@@ -16,7 +16,7 @@ const SearchBar = () => {
       const data = await response.json();
 
       // Fetch your personal API data for price comparison
-      const personalResponse = await fetch("public/PersonalAPI.json"); 
+      const personalResponse = await fetch("/PersonalAPI.json"); 
       const personalApiData = await personalResponse.json();
 
       setBooks(data);
@@ -81,11 +81,11 @@ const SearchBar = () => {
 
               {/* Display prices from the personal API */}
               {book.prices ? (
-                <div>
-                  <p>Price at Diverta: {book.prices.priceDiverta} RON</p>
-                  <p>Price at Carturesti: {book.prices.priceCarturesti} RON</p>
-                  <p>Price at Librarum: {book.prices.priceLibrarum} RON</p>
-                </div>
+                <div className="price-list">
+                {book.prices.priceDiverta && <span className="store-price">Price at Diverta: {book.prices.priceDiverta} RON </span>}
+                {book.prices.priceCarturesti && <span className="store-price">Price at Carturesti: {book.prices.priceCarturesti} RON </span>}
+                {book.prices.priceLibrarum && <span className="store-price">Price at Librarum: {book.prices.priceLibrarum} RON </span>}
+              </div>
               ) : (
                 <p>No price info available</p>
               )}

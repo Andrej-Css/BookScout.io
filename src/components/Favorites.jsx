@@ -7,13 +7,15 @@ const Favorites = () => {
     const {favorites} = UseAppContext(); 
     console.log(favorites); 
     return (
-        <div>
-            <h1>Here are your favorite books </h1>
+        <div className="Wrapper-for-Fvs">
+            {/* <h1 className="favorite-book">Favorite Books:</h1> */}
             {favorites.length > 0 ? (
             favorites.map(book => (
-                <div key={book.id}>
-                    <div><img src={book.image_url}></img></div>
-                    <div><h2>{book.title}</h2></div>
+                <div className="fav-wrap" key={book.id}>
+                    <div className="display-favBook"><img src={book.image_url}></img></div>
+                    <span className="display-favBook"><h3>{book.title}, {book.authors}</h3></span>
+                    {/* <div className="display-favBook"><h3>{book.authors}</h3></div> */}
+
                     <FavoriteButton book = {book}/>
                 </div>
             )) 

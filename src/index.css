@@ -54,7 +54,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
@@ -65,4 +65,17 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+} */
+
+@media (max-width: 768px) {
+  .Nav-Bar-Wrapper {
+      grid-template-columns: 1fr 1fr; /* Stack navbar links on smaller screens */
+      padding: 10px 15px;
+  }
+
+  .book-list {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* More compact book grid */
+      gap: 10px;
+  }
 }
+
